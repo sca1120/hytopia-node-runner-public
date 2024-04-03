@@ -1,0 +1,22 @@
+name: Run Node
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0,12 * * *'
+
+jobs:
+  run_node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: run node
+        env:
+          NODE_WALLET_KEY: ${{ secrets.NODE_WALLET_KEY }}
+        run: |
+          wget -q https://github.com/HYCHAIN/guardian-node-software/releases/download/0.0.1/guardian-cli-linux-v0.0.1.zip -O ./node.zip
+          unzip -o ./node.zip
+          ./guardian-cli-linux guardian run $NODE_WALLET_KEY
